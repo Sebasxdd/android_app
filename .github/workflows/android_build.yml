@@ -42,15 +42,14 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-      # Punto 6: Nombre del Compilado dinámico (Proyecto + Build Number)
+      # Punto 6 y 8 Corregidos: Nombre dinámico tanto en archivo como en artefacto
       - name: Rename APK
         run: |
           cp app/build/outputs/apk/release/app-release.apk MySecureApp-build-${{ github.run_number }}.apk
 
-      # Punto 8: Exportar Artefacto (Publicar para descarga)
-      - name: Upload Artifact
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Secure-Android-APK
+          name: MySecureApp-build-${{ github.run_number }}
           path: MySecureApp-build-${{ github.run_number }}.apk
           retention-days: 5
