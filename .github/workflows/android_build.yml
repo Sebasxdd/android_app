@@ -69,3 +69,13 @@ jobs:
           echo "Creando tag $TAG_NAME..."
           git tag -a "$TAG_NAME" -m "Automated Release $TAG_NAME"
           git push origin "$TAG_NAME"
+
+      - name: Upload to Firebase App Distribution
+        if: github.event_name == 'push'
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          testers: "martinsebastianperezq@gmail.com"
+          file: MySecureApp-build-${{ github.run_number }}.apk
+          releaseNotes: "Entrega Automática Build #${{ github.run_number }} - Rama: ${{ github.ref_name }}"
