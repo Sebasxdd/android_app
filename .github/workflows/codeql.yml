@@ -1,17 +1,19 @@
-name: "CodeQL Security Scan"
+name: "CodeQL Security Analysis"
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  schedule:
+    - cron: '0 0 * * 1' # Ejecución semanal automática
 
 jobs:
   analyze:
     name: Analyze Code
     runs-on: ubuntu-latest
     permissions:
-      security-events: write  # Requerido para publicar resultados en la pestaña Security
+      security-events: write
       actions: read
       contents: read
 
@@ -19,13 +21,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      # Punto 1: Inicializar el motor de análisis de GHAS
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: java-kotlin
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      # Compilamos en Debug para evitar el requerimiento de certificados de Release
+      - name: Build for Security Analysis
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
 
+      # Ejecución del análisis estático (SAST)
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:java-kotlin"
