@@ -56,3 +56,16 @@ jobs:
           name: MySecureApp-build-${{ github.run_number }}
           path: MySecureApp-build-${{ github.run_number }}.apk
           retention-days: 5
+
+      - name: Create Git Tag
+        if: github.event_name == 'push'
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          # Definimos el tag. Ej: v1.0.25
+          TAG_NAME="v1.0.${{ github.run_number }}"
+          
+          echo "Creando tag $TAG_NAME..."
+          git tag -a "$TAG_NAME" -m "Automated Release $TAG_NAME"
+          git push origin "$TAG_NAME"
