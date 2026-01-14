@@ -10,28 +10,22 @@
     android:padding="24dp"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@android:drawable/ic_lock_lock"
-        app:tint="#2EA043" 
-        android:layout_marginBottom="16dp"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SECURE PIPELINE"
+        android:text="Author by : Martin Perez"
         android:textColor="#2EA043"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:letterSpacing="0.1"/>
+        android:letterSpacing="0.05"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Status: PRODUCTION READY"
+        android:text="Lead DevSecOps Engineer"
         android:textColor="#FFFFFF"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:layout_marginBottom="40dp"/>
 
     <TextView
