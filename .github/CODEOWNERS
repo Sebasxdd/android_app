@@ -1,0 +1,7 @@
+# Sintaxis: [Patrón de archivos] [Usuario de GitHub]
+
+# Todo el código debe ser revisado por ti
+* @Sebasxdd
+
+# (Opcional) Regla específica: Los cambios en flujos CI/CD requieren al equipo de DevOps
+.github/workflows/  @Sebasxdd
