@@ -98,3 +98,48 @@ Este proyecto genera automáticamente un.APK en cada versión estable.
 4.  Descarga el archivo `MySecureApp-build-XX.apk`.
 
 ---
+
+## Seguridad y Gestión de Secretos (GHAS)
+
+Este proyecto implementa prácticas de seguridad de nivel empresarial ("Bank-Grade Security") utilizando las capacidades nativas de GitHub.
+
+### 1. Gestión de Secretos (Secrets Management)
+Las credenciales sensibles **nunca** se almacenan en el código. Se inyectan en tiempo de ejecución utilizando **GitHub Actions Secrets**.
+
+* **Implementación:**
+    El keystore de Android se almacena codificado en Base64 y se reconstruye efímeramente solo durante la compilación.
+    
+    ```yaml
+    # Ejemplo real extraído de .github/workflows/ci-android.yml
+    - name: Decode Keystore
+      run: |
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.keystore
+      
+    - name: Build Release APK
+      env:
+        # Los secretos se inyectan como variables de entorno
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+    ```
+
+### 2. GitHub Advanced Security (Integración)
+El repositorio está configurado para utilizar herramientas de análisis estático (SAST) y análisis de dependencias (SCA).
+
+* **Dependency Review:** Se ejecuta automáticamente en cada Pull Request para bloquear dependencias vulnerables antes de que entren a `main`.
+* **CodeQL Analysis (Ejemplo de Workflow):**
+    El pipeline soporta la integración de CodeQL para detectar vulnerabilidades en el código Java/Kotlin.
+
+    ```yaml
+    # Snippet de integración GHAS / CodeQL
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'java'
+        
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+      
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+    ```
