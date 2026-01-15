@@ -59,18 +59,28 @@ jobs:
           path: MySecureApp-build-${{ github.run_number }}.apk
           retention-days: 5
 
-      - name: Create Git Tag
+      - name: Create GitHub Release
         if: github.event_name == 'push'
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          
-          # Definimos el tag. Ej: v1.0.25
-          TAG_NAME="v1.0.${{ github.run_number }}"
-          
-          echo "Creando tag $TAG_NAME..."
-          git tag -a "$TAG_NAME" -m "Automated Release $TAG_NAME"
-          git push origin "$TAG_NAME"
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: "Versión v1.0.${{ github.run_number }}"
+          body: |
+            ## Secure Release
+            Versión compilada y firmada automáticamente por el main pipeline DevSecOps.
+            
+            ### Detalles Técnicos:
+            * **Build ID:** ${{ github.run_number }}
+            * **Commit:** ${{ github.sha }}
+            * **Rama:** ${{ github.ref_name }}
+            
+            ### Descarga Directa:
+            Lineas abajo se encuentra el archivo `.apk` firmado.
+          draft: false
+          prerelease: false
+          files: MySecureApp-build-${{ github.run_number }}.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload to Firebase App Distribution
         if: github.event_name == 'push'
