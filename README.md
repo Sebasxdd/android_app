@@ -162,6 +162,6 @@ Para agregar correos directamente en el código:
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
-          # Agrega correos separados por coma (sin espacios entre ellos)
+          # correos separados por coma (sin espacios entre ellos)
           testers: "martin@email.com,qa-lead@email.com,nuevo-dev@email.com"
           file: MySecureApp-build-${{ github.run_number }}.apk
