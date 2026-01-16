@@ -143,3 +143,25 @@ El repositorio está configurado para utilizar herramientas de análisis estáti
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
     ```
+---
+
+## Gestión de Testers (Firebase App Distribution)
+
+El pipeline está configurado para enviar automáticamente el APK a los testers definidos. Para agregar o quitar personas de la lista de distribución, existen dos métodos:
+
+### Edición Directa en el Pipeline:
+Para agregar correos directamente en el código:
+
+1.  Edita el archivo `.github/workflows/ci-android.yml`.
+2.  Busca el paso llamado **"Upload to Firebase App Distribution"**.
+3.  Modifica el parámetro `testers`. Puedes agregar múltiples correos separados por comas.
+
+```yaml
+      - name: Upload to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          # Agrega correos separados por coma (sin espacios entre ellos)
+          testers: "martin@email.com,qa-lead@email.com,nuevo-dev@email.com"
+          file: MySecureApp-build-${{ github.run_number }}.apk
