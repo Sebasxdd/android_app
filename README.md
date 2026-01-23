@@ -1,5 +1,5 @@
 # Android DevSecOps Pipeline
-**Author:** Martin Sebastian Perez Q. - Lead DevSecOps Engineer
+**Author:** Martin Sebastian Perez Q. - DevSecOps Engineer
 
 ![Build Status](https://github.com/Sebasxdd/android_app/actions/workflows/ci-android.yml/badge.svg) ![Platform](https://img.shields.io/badge/Platform-Android-green) ![Security](https://img.shields.io/badge/Security-DevSecOps-blue)
 
